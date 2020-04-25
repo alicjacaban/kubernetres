@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+   name: order-server-replica-set
+spec:
+  replicas: 5
+  selector:
+    #matchLabels:
+    #  app-name: echo-server
+    matchExpressions:
+      - key: app-name
+        operator: In  # (In, Notin, Exists)
+        values:
+          - order-server
+  template:
+    metadata:
+      labels:
+        app-name: order-server
+    spec:
+      containers:
+        - name: order-server
+          image: acaban/orders:v1
+          ports:
+            - containerPort: 8080
+              name: http
+
+

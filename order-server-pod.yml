@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+   name: order-server-pod
+spec:
+  containers:
+    - name: order-server
+      image: acaban/orders:v1
+      ports:
+        - containerPort: 8080
