@@ -5,6 +5,8 @@ metadata:
 data:
   ACTIVE_PROFILEE: production
   CONFIGURATION_SERVER_URI: configuration-service
+  KAFKA_ADVERTISED_HOST_NAME: localhost
+  KAFKA_ZOOKEEPER_CONNECT: zookeeper-service
 
 ---
 apiVersion: v1
@@ -47,7 +49,7 @@ spec:
     spec:
       containers:
         - name: orders
-          image: acaban/orders
+          image: landrzejewski/training-orders
           envFrom:
             - configMapRef:
                 name: global-config-map
@@ -71,7 +73,7 @@ spec:
     spec:
       containers:
         - name: payments
-          image: acaban/payments
+          image: landrzejewski/training-payments
           envFrom:
             - configMapRef:
                 name: global-config-map
@@ -95,7 +97,7 @@ spec:
     spec:
       containers:
         - name: products
-          image: acaban/products
+          image: landrzejewski/training-products
           envFrom:
             - configMapRef:
                 name: global-config-map
@@ -136,3 +138,24 @@ spec:
     - port: 80
       targetPort: http
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper-service
+spec:
+  selector:
+    app-name: zookeeper-app
+  ports:
+    - port: 2181
+      targetPort: service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+spec:
+  selector:
+    app-name: kafka-app
+  ports:
+    - port: 9092
+      targetPort: service
